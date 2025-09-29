@@ -1,0 +1,7 @@
+django
+mssql-django
+djangorestframework
+djangorestframework-simplejwt
+pandas
+openpyxl
+django-cors-headers
