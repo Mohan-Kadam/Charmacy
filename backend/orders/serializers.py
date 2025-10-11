@@ -19,7 +19,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'product_id', 'quantity', 'total']
+        fields = ['id', 'product', 'product_id', 'quantity', 'total', 'tester_quantity']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -39,3 +39,25 @@ class OrderSerializer(serializers.ModelSerializer):
             OrderItem.objects.create(order=order, **item_data)
 
         return order
+
+
+class OrderApprovalSerializer(serializers.ModelSerializer):
+    order_id = serializers.IntegerField(write_only=True)
+    markup_margin = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+    distributorship_markup_margin = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+    advance_payment_markup_margin = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+    sales_target_markup_margin = serializers.DecimalField(max_digits=5, decimal_places=2, required=False)
+
+
+    class Meta:
+        model = Order
+        fields = [
+            'order_id', 'status',
+            'markup_margin', 'distributorship_markup_margin',
+            'advance_payment_markup_margin', 'sales_target_markup_margin'
+        ]
+    def validate_status(self, value):
+        if value not in ['SCM_APPROVED', 'SCM_REJECTED', 'MSR_APPROVED', 'MSR_REJECTED']:
+            raise serializers.ValidationError("Invalid status for approval")
+        return value
+

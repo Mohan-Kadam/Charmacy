@@ -86,12 +86,42 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# import os
+# import configparser
+# from pathlib import Path
+
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# print("BASE_DIR----", BASE_DIR)
+
+# # Load config file
+# config = configparser.ConfigParser()
+# config.read(os.path.join(BASE_DIR, 'config.ini'))
+
+# # Database settings
+# db_config = config['database']
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': db_config.get('ENGINE', 'mssql'),
+#         'NAME': db_config.get('NAME'),
+#         'USER': db_config.get('USER'),
+#         'PASSWORD': db_config.get('PASSWORD'),
+#         'HOST': db_config.get('HOST', 'localhost'),
+#         'OPTIONS': {
+#             'driver': db_config.get('DRIVER', 'ODBC Driver 17 for SQL Server'),
+#             'Trusted_Connection': 'yes',
+#         },
+#     }
+# }
+
+
+
+DATABASES = { 
+    'default': { 
+        'ENGINE': 'django.db.backends.sqlite3', 
+        'NAME': BASE_DIR / 'db.sqlite3', 
+        } 
     }
-}
 
 
 # Password validation
@@ -148,4 +178,14 @@ SWAGGER_SETTINGS = {
         }
     },
     'USE_SESSION_AUTH': False,
+}
+
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # default is 5 mins
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
 }
